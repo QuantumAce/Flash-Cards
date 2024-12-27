@@ -1,4 +1,13 @@
 // Data management
+/**
+ * Your friendly deck manager! 📚
+ * 
+ * Takes care of:
+ * - Creating and deleting decks
+ * - Adding and removing cards
+ * - Tracking deck mastery
+ * - Saving and loading data
+ */
 class DeckManager {
     constructor() {
         this.decks = JSON.parse(localStorage.getItem('decks')) || [];
@@ -148,7 +157,7 @@ class DeckManager {
 
         // Check for achievements
         if (card.mastery >= 0.9) {
-            this.stats.cardsMastered++;
+            this.stats.earnAchievement(Achievement.ACHIEVEMENTS.CARD_MASTERED);
         }
         
         this.saveDecksToDB();
@@ -308,6 +317,15 @@ class DeckManager {
 }
 
 // Timer functionality
+/**
+ * Your friendly study timer! ⏱️
+ * 
+ * Takes care of:
+ * - Tracking study time
+ * - Suggesting breaks
+ * - Keeping you focused
+ * - Celebrating your progress
+ */
 class StudyTimer {
     constructor(displayElement, progressBar) {
         this.display = displayElement;
@@ -444,6 +462,15 @@ class StudyTimer {
 }
 
 // UI Controller
+/**
+ * Your friendly UI controller! 📊
+ * 
+ * Takes care of:
+ * - Setting up event listeners
+ * - Rendering decks and cards
+ * - Handling user interactions
+ * - Updating the UI
+ */
 class UIController {
     constructor() {
         this.deckManager = new DeckManager();
@@ -1212,6 +1239,15 @@ class UIController {
 }
 
 // Achievement class
+/**
+ * Your friendly achievement tracker! 🏆
+ * 
+ * Keeps track of:
+ * - Study streaks
+ * - Cards mastered
+ * - Time studied
+ * - Special achievements
+ */
 class Achievement {
     static ACHIEVEMENTS = {
         FIRST_DECK: { id: 'first_deck', name: 'Deck Creator', description: 'Create your first deck', points: 10 },
@@ -1231,6 +1267,16 @@ class Achievement {
 }
 
 // Statistics class
+/**
+ * Your friendly statistics tracker! 📊
+ * 
+ * Keeps track of:
+ * - Total study time
+ * - Cards mastered
+ * - Longest study streak
+ * - Study history
+ * - Achievements
+ */
 class Statistics {
     constructor() {
         this.totalStudyTime = 0;
