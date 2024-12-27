@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMaster Pro - Smart Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
+</head>
+<body>
+    <div class="app-container">
+        <nav>
+            <div class="nav-content">
+                <h1><i class="fas fa-graduation-cap"></i> StudyMaster Pro</h1>
+                <div class="nav-buttons">
+                    <button id="createDeckBtn" class="btn primary"><i class="fas fa-plus"></i> New Deck</button>
+                    <button id="statsBtn" class="btn"><i class="fas fa-chart-bar"></i> Stats</button>
+                    <button id="settingsBtn" class="btn"><i class="fas fa-cog"></i></button>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="study-section" id="studySection">
+                <div class="study-stats">
+                    <div class="stat-card">
+                        <h3>Study Time</h3>
+                        <p id="timer">25:00</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Cards Reviewed</h3>
+                        <p id="cardsReviewed">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Streak</h3>
+                        <p id="currentStreak">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Mastery Level</h3>
+                        <p id="masteryLevel">0%</p>
+                    </div>
+                </div>
+
+                <div class="timer-controls">
+                    <button id="startTimer" class="btn"><i class="fas fa-play"></i></button>
+                    <button id="resetTimer" class="btn"><i class="fas fa-redo"></i></button>
+                    <select id="timerDuration" class="btn">
+                        <option value="1500">25 minutes</option>
+                        <option value="900">15 minutes</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress"></div>
+                </div>
+
+                <div class="deck-info">
+                    <h2 id="currentDeckName">Select a Deck</h2>
+                    <div class="stats">
+                        <span id="cardCount">0/0 Cards</span>
+                        <div class="confidence-buttons" id="confidenceButtons" style="display: none;">
+                            <button class="btn" data-confidence="1"><i class="fas fa-times"></i></button>
+                            <button class="btn" data-confidence="2"><i class="fas fa-question"></i></button>
+                            <button class="btn" data-confidence="3"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flashcard-container">
+                    <button id="enterFocusMode" class="btn">
+                        <i class="fas fa-expand"></i> Enter Focus Mode
+                    </button>
+                    <div class="flashcard" id="flashcard">
+                        <div class="mastery-indicator">
+                            <span>Mastery:</span>
+                            <div class="mastery-bar">
+                                <div class="mastery-progress" id="masteryProgress"></div>
+                            </div>
+                            <span id="masteryPercentage">0%</span>
+                        </div>
+                        <div class="study-recommendation" id="studyRecommendation"></div>
+                        <div class="card-front">
+                            <div class="card-content">
+                                <div class="card-header">Question</div>
+                                <div class="card-main" id="questionText">Select a deck to start studying</div>
+                                <div class="flip-hint">
+                                    <i class="fas fa-undo"></i>
+                                    <span>Click or press SPACE to flip</span>
+                                </div>
+                            </div>
+                            <div class="flip-indicator">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-content">
+                                <div class="card-header">Answer</div>
+                                <div class="card-main" id="answerText">Your answers will appear here</div>
+                                <div class="card-footer">
+                                    How well did you know this?
+                                </div>
+                                <div class="confidence-buttons" id="confidenceButtons">
+                                    <button class="btn" data-confidence="1" title="Didn't know">
+                                        <i class="fas fa-times"></i>
+                                        <span>Again</span>
+                                    </button>
+                                    <button class="btn" data-confidence="2" title="Somewhat knew">
+                                        <i class="fas fa-question"></i>
+                                        <span>Hard</span>
+                                    </button>
+                                    <button class="btn" data-confidence="3" title="Knew it well">
+                                        <i class="fas fa-check"></i>
+                                        <span>Easy</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-controls">
+                    <button id="prevCard" class="btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button id="shuffleCards" class="btn"><i class="fas fa-random"></i></button>
+                    <button id="nextCard" class="btn" disabled><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div id="focusModeContainer" class="focus-mode" style="display: none;">
+                <div class="focus-mode-header">
+                    <div class="focus-mode-stats">
+                        <div>Time Remaining: <span id="focusTimer">25:00</span></div>
+                        <div>Cards: <span id="focusCardCount">0/0</span></div>
+                        <div>Mastery: <span id="focusMastery">0%</span></div>
+                    </div>
+                    <button class="exit-focus-btn" id="exitFocusMode">
+                        <i class="fas fa-compress"></i> Exit Focus Mode
+                    </button>
+                </div>
+                <div class="flashcard-container">
+                    <!-- Flashcard content will be cloned here -->
+                </div>
+                <div class="focus-mode-controls">
+                    <button class="btn" id="focusPrevCard">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <button class="btn" id="focusNextCard">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="decks-section" id="decksSection">
+                <div class="decks-header">
+                    <h2>Your Decks</h2>
+                    <div class="deck-filters">
+                        <select id="sortDecks" class="btn">
+                            <option value="name">Name</option>
+                            <option value="recent">Recently Used</option>
+                            <option value="mastery">Mastery Level</option>
+                        </select>
+                        <input type="search" id="searchDecks" placeholder="Search decks..." class="search-input">
+                        <div class="deck-actions">
+                            <button id="exportAnki" class="btn"><i class="fas fa-file-export"></i> Export to Anki</button>
+                            <button id="importAnki" class="btn"><i class="fas fa-file-import"></i> Import from Anki</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="deck-grid" id="deckGrid">
+                    <!-- Decks will be dynamically added here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for creating/editing decks -->
+    <div class="modal" id="deckModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Create New Deck</h2>
+            <form id="deckForm">
+                <div class="form-group">
+                    <label for="deckName">Deck Name:</label>
+                    <input type="text" id="deckName" required>
+                </div>
+                <div class="form-group">
+                    <label for="deckCategory">Category:</label>
+                    <select id="deckCategory" required>
+                        <option value="general">General</option>
+                        <option value="science">Science</option>
+                        <option value="math">Mathematics</option>
+                        <option value="language">Languages</option>
+                        <option value="history">History</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cards:</label>
+                    <div id="cardsList">
+                        <!-- Card input fields will be added here -->
+                    </div>
+                    <button type="button" id="addCardBtn" class="btn">Add Card</button>
+                    <button type="button" id="importCards" class="btn">Import from CSV</button>
+                </div>
+                <button type="submit" class="btn primary">Save Deck</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div class="modal" id="statsModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Your Study Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>Total Study Time</h3>
+                    <p id="totalStudyTime">0 hours</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Cards Mastered</h3>
+                    <p id="cardsMastered">0</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Longest Streak</h3>
+                    <p id="longestStreak">0 days</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Achievement Points</h3>
+                    <p id="achievementPoints">0</p>
+                </div>
+            </div>
+            <div class="study-history">
+                <h3>Study History</h3>
+                <canvas id="studyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="anki_utils.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
